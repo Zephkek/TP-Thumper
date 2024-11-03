@@ -69,7 +69,6 @@
 void create_dhcp_discover_packet(unsigned char* packet, int* packet_length);
 void add_option(unsigned char* packet, int* offset, unsigned char option,
     unsigned char length, unsigned char* data);
-void enhance_tp_link_tests(unsigned char* packet, int* offset);
 void print_packet_hex(unsigned char* packet, int length);
 int wait_for_response(SOCKET sock, int timeout);
 
