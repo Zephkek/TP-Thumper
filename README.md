@@ -61,10 +61,11 @@ add_option(packet, offset, 0x3D, 0xFF, {0x01});
 ### Proof of Concept
 #### Video Demonstration
 
-https://github.com/user-attachments/assets/6732ec2c-7169-4878-bcdb-457221320d42
+https://github.com/user-attachments/assets/ed897aed-540e-4ad8-8f70-788b264036bd
 
 
 Key exploitation primitives:
+
 ```c
 void create_exploit_packet() {
     // 1. Craft oversized hostname
