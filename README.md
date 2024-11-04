@@ -64,6 +64,10 @@ add_option(packet, offset, 0x3D, 0xFF, {0x01});
 https://github.com/user-attachments/assets/ed897aed-540e-4ad8-8f70-788b264036bd
 
 
+https://github.com/user-attachments/assets/46c6a5f0-c693-4a68-acbb-058fd1113fb6
+
+
+
 Key exploitation primitives:
 
 ```c
