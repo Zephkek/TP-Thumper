@@ -2,7 +2,7 @@
 ## Technical Analysis of Firmware Vulnerability
 
 ### Overview
-Critical memory corruption vulnerability discovered in TP-Link VN020 F3v(T) routers (firmware version TT_V6.2.1021) through malformed DHCP DISCOVER packets. Affects all TP-Link VN020-F3v(T) routers deployed by Tunisie Telecom.
+Critical memory corruption vulnerability discovered in TP-Link VN020 F3v(T) routers (firmware version TT_V6.2.1021) through malformed DHCP DISCOVER packets. Affects all TP-Link VN020-F3v(T) routers deployed by Tunisie Telecom and Topnet, the same issue has been identified in Algerian and Morocco versions, testing has been done on the Tunisian ones.
 
 ### Vulnerability Details
 - **Type**: Stack Buffer Overflow / Memory Corruption
