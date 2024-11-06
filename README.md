@@ -13,26 +13,6 @@ Critical memory corruption vulnerability discovered in TP-Link VN020 F3v(T) rout
 
 ### Technical Analysis
 
-#### The vurnable portion:
-During firmware reverse engineering, the following vulnerable DHCP parsing routine was identified:
-
-
-
-
-```nasm
-; DHCP Option parsing routine at 0x8004A2E0
-parse_hostname:
-    push    ebp
-    mov     ebp, esp
-    sub     esp, 40h      ; Only 64 bytes allocated
-    
-    ; Vulnerable memcpy - no length check
-    mov     edi, [ebp+8]  ; Destination buffer
-    mov     esi, [ebp+12] ; Source (DHCP hostname)
-    mov     ecx, [ebp+16] ; Length (can be > 64)
-    rep     movsb         ; Overflow if length > 64
-```
-
 #### Attack Vector Analysis
 1. **Primary Stack Overflow**
    - Hostname buffer allocated: 64 bytes
