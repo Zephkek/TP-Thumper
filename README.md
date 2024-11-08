@@ -46,6 +46,11 @@ https://github.com/user-attachments/assets/ed897aed-540e-4ad8-8f70-788b264036bd
 
 https://github.com/user-attachments/assets/46c6a5f0-c693-4a68-acbb-058fd1113fb6
 
+Router may also try to restart it self as shown here due to the crash as shown here: 
+
+https://github.com/user-attachments/assets/0e2d2905-74ac-4829-b127-538f2d159d0d
+
+
 
 
 Key exploitation primitives:
