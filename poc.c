@@ -18,8 +18,8 @@
  * - DHCP service running on port 67
  * - Processes broadcast DISCOVER packets
  * - No authentication required
- * - Affects all routers running VN020 Fv(t) specifically the ones
- *   supplied by Tunisie Telecom
+ * - Affects all routers running VN020 F3v(t) specifically the ones
+ *   supplied by Tunisie Telecom & Topnet
  *
  * Exploitation Method:
  * ------------------
